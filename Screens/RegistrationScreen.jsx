@@ -30,14 +30,14 @@ export function RegistrationScreen({ initialState, navigation }) {
   return (
     <KeyboardAvoidingView style={{ width: "100%" }}>
       <View style={styles.formContainer}>
-        {setiIsPhotoAdded ? (
+        {isPhotoAdded ? (
           <View style={styles.photoWrap}>
             <View style={styles.addPhotoBtn}>
               <TouchableOpacity>
                 <AntDesign
-                  name="pluscircleo"
+                  name="closecircleo"
                   size={25}
-                  color="#FF6C00"
+                  color="#E8E8E8"
                   backgroundColor="white"
                 />
               </TouchableOpacity>
