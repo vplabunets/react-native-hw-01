@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "react-native-hw-01",
-    "slug": "react-native-hw-01",
+    "name": "react-native-hw-01_b",
+    "slug": "react-native-hw-01_b",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -11,12 +11,11 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "jsEngine": "hermes",
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
