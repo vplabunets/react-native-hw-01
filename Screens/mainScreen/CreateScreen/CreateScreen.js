@@ -11,17 +11,13 @@ import { Camera } from "expo-camera";
 import * as Location from "expo-location";
 import { AntDesign, Feather } from "@expo/vector-icons";
 
-const initialState = {
-  login: "",
-  email: "",
-  password: "",
-};
 export const CreateScreen = ({ navigation }) => {
-  const [state, setState] = useState(initialState);
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [isPhotoAdded, setiIsPhotoAdded] = useState(false);
   const [camera, setCamera] = useState(null);
   const [photo, setPhoto] = useState(null);
+  const [photoName, setPhotoName] = useState(null);
+  const [photoPlace, setPhotoPlace] = useState(null);
   const [location, setLocation] = useState(null);
   const [status, setStatus] = useState(false);
 
@@ -64,12 +60,12 @@ export const CreateScreen = ({ navigation }) => {
 
   const sendPhoto = async () => {
     // console.log(navigation);
-    // navigation.navigate("PostsScreen", {
-    //   screen: "DefaultScreen",
-    //   params: { photo },
-    // });
+    navigation.navigate("PostsScreen", {
+      screen: "Posts",
+      params: { photo, photoName, photoPlace, location },
+    });
 
-    navigation.navigate("DefaultScreen", { photo });
+    // navigation.navigate("DefaultScreen", { photo });
   };
 
   const deletePost = () => {
@@ -92,8 +88,8 @@ export const CreateScreen = ({ navigation }) => {
               <View style={styles.takePhotoContainer}>
                 <Image
                   style={{
-                    width: "50%",
-                    height: "50%",
+                    width: "100%",
+                    height: "100%",
                   }}
                   source={{ uri: photo }}
                 />
@@ -129,12 +125,7 @@ export const CreateScreen = ({ navigation }) => {
             onFocus={() => {
               setIsShowKeyboard(true);
             }}
-            onChangeText={(value) =>
-              setState((prevState) => ({
-                ...prevState,
-                email: value,
-              }))
-            }
+            onChangeText={(value) => setPhotoName(value)}
           />
         </View>
         <View style={styles.passwordInputWrap}>
@@ -145,18 +136,25 @@ export const CreateScreen = ({ navigation }) => {
               onFocus={() => {
                 setIsShowKeyboard(true);
               }}
-              onChangeText={(value) =>
-                setState((prevState) => ({
-                  ...prevState,
-                  password: value,
-                }))
-              }
+              onChangeText={(value) => setPhotoPlace(value)}
             />
           </View>
         </View>
-        <View style={styles.button}>
+        <View
+          style={{
+            ...styles.button,
+            backgroundColor: photo ? "#FF6C00" : "#F6F6F6",
+          }}
+        >
           <TouchableOpacity activeOpacity={0.7} onPress={sendPhoto}>
-            <Text style={styles.buttonText}> Publish</Text>
+            <Text
+              style={{
+                ...styles.buttonText,
+                color: photo ? "#FFFFFF" : "#BDBDBD",
+              }}
+            >
+              Publish
+            </Text>
           </TouchableOpacity>
         </View>
         <TouchableOpacity style={styles.buttonDelete} onPress={deletePost}>
@@ -191,7 +189,7 @@ const styles = StyleSheet.create({
   camera: {
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#00ced1",
+    backgroundColor: "#E8E8E8 ",
     borderRadius: 8,
     height: 230,
   },
@@ -243,7 +241,7 @@ const styles = StyleSheet.create({
     height: 50,
     borderWidth: 0,
     borderRadius: 100,
-    backgroundColor: "#F6F6F6",
+
     borderColor: "red",
     alignItems: "center",
     justifyContent: "center",
@@ -251,17 +249,15 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontFamily: "Roboto",
-    color: "#BDBDBD",
+
     fontSize: 16,
   },
   buttonDelete: {
     width: 70,
     height: 40,
-    backgroundColor: "#F6F6F6",
     borderRadius: 20,
     justifyContent: "center",
     alignItems: "center",
-
     marginLeft: "auto",
     marginRight: "auto",
   },

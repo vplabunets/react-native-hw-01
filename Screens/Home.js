@@ -65,7 +65,7 @@ export const Home = ({ navigation }) => {
             <TouchableOpacity
               style={{ marginLeft: 16, marginBottom: 10 }}
               activeOpacity={0.7}
-              onPress={() => navigation.navigate("Posts")}
+              onPress={() => navigation.navigate("PostsScreen")}
             >
               <Feather name="arrow-left" size={24} color="#BDBDBD" />
             </TouchableOpacity>
