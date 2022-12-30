@@ -21,13 +21,14 @@ export const DefaultScreen = ({ navigation, route, xxx }) => {
   return (
     <View style={styles.container}>
       <View style={styles.userPhotoWrap}>
-        <Image style={styles.userPhoto} />
+        <Image style={{ ...styles.userPhoto }} />
+
         <View style={styles.userDetails}>
           <View style={{ fontWeight: "bald" }}>
-            <Text style={styles.userName}>xxx yyy</Text>
+            <Text style={styles.userName}>Brendan Eich</Text>
           </View>
           <View>
-            <Text style={styles.userEmail}>xxx@mail.com</Text>
+            <Text style={styles.userEmail}>eich@mail.com</Text>
           </View>
         </View>
       </View>
@@ -101,8 +102,12 @@ const styles = StyleSheet.create({
   userPhoto: {
     width: 60,
     height: 60,
+    border: 1,
+    borderColor: "red",
     borderRadius: 16,
     marginRight: 8,
+    border: 2,
+    backgroundColor: "#FFFFFF",
   },
   userDetails: {
     // alignItems: "center",

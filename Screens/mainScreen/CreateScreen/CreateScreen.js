@@ -75,93 +75,99 @@ export const CreateScreen = ({ navigation }) => {
     setLocation("");
   };
   return (
-    <View style={styles.container}>
-      <View
-        style={{
-          ...styles.form,
-          marginBottom: isShowKeyboard ? 20 : 30,
-        }}
-      >
-        <View style={styles.photoWrap}>
-          <Camera ref={setCamera} style={styles.camera}>
-            {photo && (
-              <View style={styles.takePhotoContainer}>
-                <Image
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                  }}
-                  source={{ uri: photo }}
-                />
-              </View>
-            )}
-            <TouchableOpacity
-              style={styles.addPhotoIcon}
-              onPress={() => takePhoto()}
-            >
-              <AntDesign name="camera" size={24} color="#F6F6F6" />
-            </TouchableOpacity>
-          </Camera>
-        </View>
-        <View>
+    // <View style={styles.container}>
+    <View
+      style={{
+        ...styles.form,
+        marginBottom: isShowKeyboard ? 20 : 30,
+      }}
+    >
+      <View style={styles.photoWrap}>
+        <Camera ref={setCamera} style={styles.camera}>
+          {photo && (
+            <View style={styles.takePhotoContainer}>
+              <Image
+                style={{
+                  width: "100%",
+                  height: "100%",
+                }}
+                source={{ uri: photo }}
+              />
+            </View>
+          )}
           <TouchableOpacity
-            activeOpacity={0.7}
-            onPress={() => console.log(state)}
+            style={styles.addPhotoIcon}
+            onPress={() => takePhoto()}
           >
-            <Text
-              style={styles.addPhotoBtn}
-              onPress={() => {
-                console.log("Add photo");
-              }}
-            >
-              Add Photo
-            </Text>
+            <AntDesign name="camera" size={24} color="#F6F6F6" />
           </TouchableOpacity>
-        </View>
-        <View>
+        </Camera>
+      </View>
+      <View>
+        <TouchableOpacity
+          activeOpacity={0.7}
+          onPress={() => console.log(state)}
+        >
+          <Text
+            style={styles.addPhotoBtn}
+            onPress={() => {
+              console.log("Add photo");
+            }}
+          >
+            Add Photo
+          </Text>
+        </TouchableOpacity>
+      </View>
+      <View>
+        <TextInput
+          style={styles.input}
+          placeholder={"Name"}
+          onFocus={() => {
+            setIsShowKeyboard(true);
+          }}
+          onChangeText={(value) => setPhotoName(value)}
+        />
+      </View>
+      <View style={styles.passwordInputWrap}>
+        <View style={{ marginBottom: 0 }}>
+          {/* <TouchableOpacity
+            style={{ ...styles.mapPin, display: "flex", flexDirection: "row" }}
+            onPress={deletePost}
+          >
+            <Feather name="map-pin" size={24} color="#DADADA" />
+          </TouchableOpacity> */}
           <TextInput
             style={styles.input}
-            placeholder={"Name"}
+            placeholder={"Location"}
             onFocus={() => {
               setIsShowKeyboard(true);
             }}
-            onChangeText={(value) => setPhotoName(value)}
+            onChangeText={(value) => setPhotoPlace(value)}
           />
         </View>
-        <View style={styles.passwordInputWrap}>
-          <View style={{ marginBottom: 0 }}>
-            <TextInput
-              style={styles.input}
-              placeholder={"Location"}
-              onFocus={() => {
-                setIsShowKeyboard(true);
-              }}
-              onChangeText={(value) => setPhotoPlace(value)}
-            />
-          </View>
-        </View>
-        <View
-          style={{
-            ...styles.button,
-            backgroundColor: photo ? "#FF6C00" : "#F6F6F6",
-          }}
-        >
-          <TouchableOpacity activeOpacity={0.7} onPress={sendPhoto}>
-            <Text
-              style={{
-                ...styles.buttonText,
-                color: photo ? "#FFFFFF" : "#BDBDBD",
-              }}
-            >
-              Publish
-            </Text>
-          </TouchableOpacity>
-        </View>
-        <TouchableOpacity style={styles.buttonDelete} onPress={deletePost}>
-          <Feather name="trash-2" size={24} color="#DADADA" />
+      </View>
+      <View
+        style={{
+          ...styles.button,
+          backgroundColor: photo ? "#FF6C00" : "#F6F6F6",
+        }}
+      >
+        <TouchableOpacity activeOpacity={0.7} onPress={sendPhoto}>
+          <Text
+            style={{
+              ...styles.buttonText,
+              color: photo ? "#FFFFFF" : "#BDBDBD",
+            }}
+          >
+            Publish
+          </Text>
         </TouchableOpacity>
       </View>
+      <TouchableOpacity style={styles.buttonDelete} onPress={deletePost}>
+        <Feather name="trash-2" size={24} color="#DADADA" />
+      </TouchableOpacity>
     </View>
+    // </View>
   );
 };
 const styles = StyleSheet.create({
@@ -175,16 +181,16 @@ const styles = StyleSheet.create({
   },
   form: {
     height: 724,
-    width: 375,
+    width: "100%",
     paddingHorizontal: 16,
     backgroundColor: "white",
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
+    marginTop: 32,
   },
 
   photoWrap: {
-    marginTop: 32,
-    width: 343,
+    idth: "100%",
   },
   camera: {
     alignItems: "center",
@@ -260,5 +266,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginLeft: "auto",
     marginRight: "auto",
+    backgroundColor: "#F6F6F6",
   },
 });

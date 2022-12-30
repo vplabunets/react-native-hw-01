@@ -12,7 +12,12 @@ export const PostsScreen = ({ navigation, route }) => {
   console.log("route in PostsScreen", route.params);
 
   return (
-    <NestedScreen.Navigator initialRouteName="Posts">
+    <NestedScreen.Navigator
+      initialRouteName="Posts"
+      screenOptions={{
+        headerTitleAlign: "center",
+      }}
+    >
       <NestedScreen.Screen
         name="Posts"
         title="Posts"

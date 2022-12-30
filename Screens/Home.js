@@ -15,6 +15,7 @@ export const Home = ({ navigation }) => {
     <MainTab.Navigator
       initialRouteName="Create post"
       screenOptions={{
+        headerTitleAlign: "center",
         tabBarActiveTintColor: "#ffffff",
         tabBarActiveBackgroundColor: "#FF6C00",
         tabBarInactiveTintColor: "#212121CC",
@@ -30,6 +31,7 @@ export const Home = ({ navigation }) => {
         name="PostsScreen"
         component={PostsScreen}
         options={{
+          headerTitleAlign: "center",
           headerShown: false,
           tabBarIcon: ({ focused, size, color }) => (
             <TouchableOpacity>
@@ -46,7 +48,6 @@ export const Home = ({ navigation }) => {
             marginRight: 15,
             width: 70,
             height: 40,
-
             borderRadius: 20,
           },
         }}
@@ -84,6 +85,8 @@ export const Home = ({ navigation }) => {
         name="Profile"
         component={ProfileScreen}
         options={{
+          headerTitleAlign: "center",
+          tabBarIconStyle: { color: "red" },
           tabBarIcon: ({ focused, size, color }) => (
             <Feather name="user" size={size} color={color} focused={focused} />
           ),
@@ -91,7 +94,6 @@ export const Home = ({ navigation }) => {
           tabBarItemStyle: {
             width: 70,
             height: 40,
-
             borderRadius: 20,
           },
         }}
