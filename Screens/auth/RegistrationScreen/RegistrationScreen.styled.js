@@ -20,8 +20,6 @@ export const styles = StyleSheet.create({
     position: "absolute",
     marginTop: 203,
     alignSelf: "center",
-    // marginLeft: 128,
-    // marginRight: 127,
     width: 120,
     height: 120,
     border: "none",
@@ -44,8 +42,7 @@ export const styles = StyleSheet.create({
     marginTop: 263,
     paddingHorizontal: 16,
     height: 549,
-
-    backgroundColor: "white",
+    backgroundColor: "#FFFFFF",
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
   },

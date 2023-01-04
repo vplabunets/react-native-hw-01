@@ -7,58 +7,129 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
-import { registerAsset } from "react-native-web/dist/cjs/modules/AssetRegistry";
-import { Entypo, Feather } from "@expo/vector-icons";
-export const DefaultScreen = ({ navigation, route, xxx }) => {
-  console.log("route in DefaultScreen", route.params);
-  const [posts, setPosts] = useState("");
+import { useSelector } from "react-redux";
+import db from "../../firebase/config";
+import { Feather } from "@expo/vector-icons";
+
+export const DefaultScreen = ({ navigation, route }) => {
+  const [post, setPost] = useState([]);
+  const { login, email, userPic } = useSelector((state) => state.auth);
+  const [allComments, setAllComments] = useState([]);
+
+  const getAllPosts = async () => {
+    try {
+      await db
+        .firestore()
+        .collection("posts")
+        .onSnapshot((data) =>
+          setPost(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+        );
+    } catch (error) {
+      console.error("getAllPosts", error);
+    }
+  };
+
+  const getAllComments = async () => {
+    await firebase
+      .firestore()
+      .collection("posts")
+      .doc(postId)
+      .collection("comments")
+      .onSnapshot((data) =>
+        setAllComments(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+      );
+  };
 
   useEffect(() => {
-    if (route.params) setPosts((prevState) => [...prevState, route.params]);
-  }, [route.params]);
+    getAllPosts();
+    getAllComments();
+  }, []);
 
-  console.log("posts", posts);
+  const addLike = async (item) => {
+    let like = item.like ? item.like + 1 : 0 + 1;
+    await db
+      .firestore()
+      .collection("posts")
+      .doc(item.id)
+      .set({ ...item, like });
+  };
+
+  // console.log("post", post);
   return (
     <View style={styles.container}>
       <View style={styles.userPhotoWrap}>
-        <Image style={{ ...styles.userPhoto }} />
-
+        <Image source={{ uri: userPic }} style={{ ...styles.userPhoto }} />
         <View style={styles.userDetails}>
-          <View style={{ fontWeight: "bald" }}>
-            <Text style={styles.userName}>Brendan Eich</Text>
+          <View>
+            <Text style={styles.userName}>{login}</Text>
           </View>
           <View>
-            <Text style={styles.userEmail}>eich@mail.com</Text>
+            <Text style={styles.userEmail}>{email}</Text>
           </View>
         </View>
       </View>
       <FlatList
-        data={posts}
+        data={post}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => {
-          console.log(item);
           return (
-            <View style={{ ...styles.postPhoto, marginBottom: 32 }}>
-              <Image
-                source={{ uri: item.photo }}
-                style={{ height: 240, borderRadius: 8, marginBottom: 8 }}
-              />
-              <View style={{ marginBottom: 11 }}>
-                <Text style={{}}>{item.photoName}</Text>
-              </View>
-              <View
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                }}
+            <View style={styles.postPhoto}>
+              <Image source={{ uri: item.photo }} style={styles.image} />
+              <Text
+                style={{ fontSize: 16, fontWeight: "500", marginBottom: 11 }}
               >
-                <TouchableOpacity
-                // style={styles.buttonDelete}
-                // onPress={deletePost}
-                >
-                  <Feather name="message-circle" size={24} color="#DADADA" />
-                </TouchableOpacity>
+                {item.photoName}
+              </Text>
+              <View style={styles.photoActionsContainer}>
+                <View style={styles.photoCommentsAndLikesContainer}>
+                  <View style={styles.photoCommentsContainer}>
+                    <TouchableOpacity
+                      style={{ marginRight: 9 }}
+                      onPress={() =>
+                        navigation.navigate("Comments", {
+                          postId: item.id,
+                          uri: item.photo,
+                        })
+                      }
+                    >
+                      <Feather
+                        name="message-circle"
+                        size={24}
+                        color={item.amount ? "#FF6C00" : "#BDBDBD"}
+                      />
+                    </TouchableOpacity>
+                    <Text
+                      style={{
+                        fontSize: 16,
+                        marginLeft: 9,
+                        textAlignVertical: "center",
+                        color: item.amount ? "#212121" : "#BDBDBD",
+                      }}
+                    >
+                      {item.amount ? item.amount : 0}
+                    </Text>
+                  </View>
+                  <View style={styles.photoCommentsContainer}>
+                    <TouchableOpacity onPress={() => addLike(item)}>
+                      <Feather
+                        name="thumbs-up"
+                        size={24}
+                        color={item.like ? "#FF6C00" : "#BDBDBD"}
+                      />
+                    </TouchableOpacity>
+                    <Text
+                      style={{
+                        fontSize: 16,
+                        marginLeft: 9,
+                        textAlignVertical: "center",
+                        color: item.like ? "#212121" : "#BDBDBD",
+                      }}
+                    >
+                      {item.like ? item.like : 0}
+                    </Text>
+                  </View>
+                </View>
+
                 <View
                   style={{
                     display: "flex",
@@ -67,11 +138,15 @@ export const DefaultScreen = ({ navigation, route, xxx }) => {
                 >
                   <TouchableOpacity
                     style={{ marginRight: 13 }}
-                    // onPress={deletePost}
+                    onPress={() =>
+                      navigation.navigate("Map", {
+                        location: item.location,
+                      })
+                    }
                   >
                     <Feather name="map-pin" size={24} color="#DADADA" />
                   </TouchableOpacity>
-                  <Text style={{}}>{item.photoPlace}</Text>
+                  <Text style={{ fontSize: 16 }}>{item.photoPlace}</Text>
                 </View>
               </View>
             </View>
@@ -116,10 +191,28 @@ const styles = StyleSheet.create({
   userEmail: {
     fontSize: 11,
   },
+  image: { height: 240, borderRadius: 8, marginBottom: 8 },
   postPhoto: {
     flexDirection: "column",
     border: 1,
     borderColor: "red",
     borderRadius: 8,
+    marginBottom: 32,
+  },
+  photoActionsContainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  photoCommentsAndLikesContainer: {
+    display: "flex",
+    flexDirection: "row",
+    marginRight: 27,
+  },
+  photoCommentsContainer: {
+    marginBottom: 11,
+    display: "flex",
+    flexDirection: "row",
+    marginRight: 27,
   },
 });

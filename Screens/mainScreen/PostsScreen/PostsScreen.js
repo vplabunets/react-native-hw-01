@@ -1,16 +1,22 @@
-import React, { useEffect, useState } from "react";
-import { StyleSheet, TouchableOpacity, View, Text } from "react-native";
+import React from "react";
+import { TouchableOpacity } from "react-native";
+import { useDispatch } from "react-redux";
 import { Feather } from "@expo/vector-icons";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-const NestedScreen = createNativeStackNavigator();
+
+import { authSignOutUser } from "../../../redux/auth/authOperations";
 
 import { DefaultScreen } from "../../nestedScreens/DefaultScreen";
 import { CommentsScreen } from "../../nestedScreens/CommentsScreen";
 import { MapScreen } from "../../nestedScreens/MapScreen";
 
-export const PostsScreen = ({ navigation, route }) => {
-  console.log("route in PostsScreen", route.params);
+const NestedScreen = createNativeStackNavigator();
 
+export const PostsScreen = ({ navigation, route }) => {
+  const dispatch = useDispatch();
+  const signOut = () => {
+    dispatch(authSignOutUser());
+  };
   return (
     <NestedScreen.Navigator
       initialRouteName="Posts"
@@ -28,7 +34,7 @@ export const PostsScreen = ({ navigation, route }) => {
             <TouchableOpacity
               style={{ marginRight: 10, marginBottom: 10 }}
               activeOpacity={0.7}
-              // onPress={signOut}
+              onPress={signOut}
             >
               <Feather name="log-out" size={24} color="#BDBDBD" />
             </TouchableOpacity>
@@ -37,24 +43,15 @@ export const PostsScreen = ({ navigation, route }) => {
       />
       <NestedScreen.Screen
         options={{ headerShown: true }}
-        name="CommentsScreen"
+        name="Comments"
         component={CommentsScreen}
         title="Comments"
       />
       <NestedScreen.Screen
-        options={{ headerShown: false }}
-        name="MapScreen"
+        options={{ headerShown: true }}
+        name="Map"
         component={MapScreen}
       />
     </NestedScreen.Navigator>
   );
 };
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "red",
-
-    justifyContent: "center",
-    alignItems: "center",
-  },
-});

@@ -1,10 +1,8 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { StyleSheet, TouchableOpacity } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Entypo, Feather } from "@expo/vector-icons";
 
-const AuthStack = createNativeStackNavigator();
 const MainTab = createBottomTabNavigator();
 
 import { PostsScreen } from "./mainScreen/PostsScreen/PostsScreen";
@@ -13,7 +11,7 @@ import { ProfileScreen } from "./mainScreen/ProfileScreen/ProfileScreen";
 export const Home = ({ navigation }) => {
   return (
     <MainTab.Navigator
-      initialRouteName="Create post"
+      initialRouteName="PostsScreen"
       screenOptions={{
         headerTitleAlign: "center",
         tabBarActiveTintColor: "#ffffff",
@@ -101,12 +99,3 @@ export const Home = ({ navigation }) => {
     </MainTab.Navigator>
   );
 };
-
-export const styles = StyleSheet.create({
-  tabContainer: {
-    flex: 1,
-    backgroundColor: "black",
-    margin: 0,
-    padding: 0,
-  },
-});
